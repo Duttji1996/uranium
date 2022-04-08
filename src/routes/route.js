@@ -8,64 +8,13 @@ router.get('/test-me', function (req, res) {
     console.log(req)
     console.log('------------------')
     console.log('These are the request query parameters: ', req.query)
-    res.send('My first ever api!')
+    res.send('My first ever api, class will be start today, its 8th april ')
 });
-
-router.get('/all-candidates', function (req, res) {
-    let arr=["Prakash", "Vikas", "Shubhan","Swati", "Anuj"]
-    res.send(arr)
-});
-
-
-// problem 1
-router.get('/movies', function (req, res) {
-    let arr=["rang de basanti", "the shining", "lord of the rings", "batman begins"]
-    res.send(arr)
-});
-
-// problem 2 & 3
-
-
-router.get('/movies/:indexNumber', function (req, res) {
-    let arr1=["rang de basanti", "the shining", "lord of the rings", "batman begins"]
-    let indexNumber=req.params.indexNumber
-    if(indexNumber>arr1.length-1){
-        res.send("value is above than index number")
-    }
-    else{
-        res.send(arr1[indexNumber])
-    }
-
-    });
-
-    //Problem 4
-
-    router.get('/films', function (req, res) {
-        let abcd=[ { id: 1, name: "The Shining" }, {id: 2, name: "Incendies"}, {id: 3, name: "Rang de Basanti"}, { id: 4, name: "Finding Nemo"}]
-           
-           res.send(abcd)
-    });
-
-    //Problem 5
-
-    router.get('/films/:filmId', function (req, res) {
-       const  filmId = req.params.filmId
-
-        let obj=[{id: 1, name: "Maa Saraswati"},{id: 2, name: "Maa Vaishno Devi "},{id: 3, name:"Maa Kali"},{id: 4, name: "FunctionUp"}]
-
-        for(let i=0;i<obj.length;i++){
-            if(obj[i].id==filmId){
-                res.send(obj[i])
-                break
-            }  
-        }
-        res.send("no data match")
-    });
 
     // print first 9 natural number sum.
     router.get('/missingArr', function (req, res) {
         let b=[1,2,3,4,5,7,8,9]
-        let missing_number = b;
+        let missing_number ="";
         let sum=0;
         let sumb=0;
         for(let i=1;i<10;i++){
@@ -74,8 +23,35 @@ router.get('/movies/:indexNumber', function (req, res) {
        for(let j=0; j<b.length;j++){
         sumb=sumb + b[j];
        }
-       b=sum-sumb;
-       res.send("missing number is: ", b);
+       missing_number=missing_number + (sum-sumb);
+
+       res.send(missing_number);
+    });
+
+    router.get('/Missed', function (req, res) {
+        let p=[33,34,35,37,38]
+        let missing="";
+        let SumN= 0;
+        let sum=0;
+        for(let n=33; n<39;n++){
+            SumN=SumN+n;
+        }
+        for(let m=0;m<p.length;m++){
+            sum=sum+p[m];
+        }
+        missing=missing+(SumN-sum)
+        let arr =[];
+        arr.push(missing)
+        res.send(arr)
+        
+     
+    });
+    router.post('/ArrPost', function (req, res) {
+        let Body= req.body.likes
+        let arr=['Maa Saraswati','Maa Vaishno','Maa Kali','Maa Vindhyawasini','MyFunctionUp']
+        arr.push(Body)
+           
+           res.send(arr)
     });
 
 
