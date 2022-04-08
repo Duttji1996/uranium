@@ -61,6 +61,24 @@ router.get('/movies/:indexNumber', function (req, res) {
         }
         res.send("no data match")
     });
+
+    // print first 9 natural number sum.
+    router.get('/missingArr', function (req, res) {
+        let b=[1,2,3,4,5,7,8,9]
+        let missing_number = b;
+        let sum=0;
+        let sumb=0;
+        for(let i=1;i<10;i++){
+            sum= sum + i;
+        }
+       for(let j=0; j<b.length;j++){
+        sumb=sumb + b[j];
+       }
+       b=sum-sumb;
+       res.send("missing number is: ", b);
+    });
+
+
     
     module.exports = router;
 // // adding this comment for no reason
