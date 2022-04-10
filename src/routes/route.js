@@ -2,68 +2,76 @@ const express = require('express');
 
 const router = express.Router();
 
-router.get('/test-me', function (req, res) {
-    // let a = { msg: "My first ever API response in JSON !!"} 
+//assignment problem 1
 
+router.get('/movieList', function (req, res) {
+   let movieArr= ["Rang De Basanti","Maa Sarswati","Maa Vaishno","Maa Vindhyawasini","Function UP"]
 
-    res.send( { msg: "My first ever API response in JSON !!"} )
+    res.send( movieArr )
 });
 
+//assignment problem 2 & 3
+
+router.get('/movies/:indexNumber', function (req, res) {
+    let movieAr= ["Rang De Basanti","Maa Sarswati","Maa Vaishno","Maa Vindhyawasini","Function UP"]
+    let index=req.params.indexNumber;
+            if(index>movieAr.length-1){
+                res.send("no index number match")
+                return;
+            }
+            res.send(movieAr[index]) 
+ });
+
+ //assignment problem 4
+
+ router.get('/films', function (req, res) {
+    let movieArr= [ {
+        id: 1,
+        name: "The Shining"
+       }, {
+        id: 2,
+        name: "Incendies"
+       }, {
+        id: 3,
+        name: "Rang de Basanti"
+       }, {
+        id: 4,
+        name: "Finding Nemo"
+       }]
+       
+ 
+     res.send( movieArr )
+ });
+
+ //assignment problem 5
+
+ router.get('/films/:id', function (req, res) {
+     let index= req.params.id;
+    let movieArr= [ {
+        id: 1,
+        name: "The Shining"
+       }, {
+        id: 2,
+        name: "Incendies"
+       }, {
+        id: 3,
+        name: "Rang de Basanti"
+       }, {
+        id: 4,
+        name: "Finding Nemo"
+       }]
+    for(let i=0; i<movieArr.length;i++){
+        if(movieArr[i].id==index){
+            res.send(movieArr[i])
+            break;
+        }
+    }
+ 
+     res.send( "no id match with any films" )
+ });
+ 
 
 
-router.get('/test-api1', function (req, res) {
-
-    res.send( "hi FunctionUp " )
-});
-
-
-router.get('/test-api2', function (req, res) {
-
-    res.send( { msg: "Hi FUnctionUp..again !"} )
-});
-
-
-router.get('/test-api3', function (req, res) {
-
-    res.send( { msg: "Hi FUnctionUp..again..this is another similar api !"} )
-});
-
-
-router.get('/test-api4', function (req, res) {
-
-    res.send( { msg: "Hi FUnctionUp..again..this is another similar api ..not I am getting bored!"} )
-});
-
-
-router.get('/test-api5', function (req, res) {
-
-    res.send( { msg: "Hi FUnctionUp" , name:"FunctionUp", age: "100"} )
-});
-
-
-
-router.get('/test-api6', function (req, res) {
-
-    res.send( {   data: [12, 24, 36, 48, 60]  }   )
-});
-
-router.post('/test-post1', function (req, res) {
-
-    res.send( {  msg: "hi guys"  }   )
-});
-
-
-// to send data in  post request-> prefer sending in BODY -> click body-raw-json
-router.post('/test-post2', function (req, res) {
-    let data= req.body
-    console.log(data)
-    res.send( {  msg: "hi guys..my 2nd post req"  }   )
-});
-
-
-const randomController= require("../controllers/randomController.js")
-//write a post request to accept an element in post request body and add it to the given array and return the new array
-router.post('/test-post3', randomController.addToArray ); //HANDLER/CONTROLLER
 
 
 
