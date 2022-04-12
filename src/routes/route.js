@@ -1,11 +1,13 @@
 const express = require('express');
 const res = require('express/lib/response');
+const userSchema=require('../mongopractise/mongo');
 
 const router = express.Router();
 
-router.get('/test-me', function (req, res) {
-
-    res.send('My first ever api, class will be start today, its 8th april ')
+router.post('/test-me1', async function (req, res) {
+let data= req.body
+let savedData= await userSchema.create(data)
+res.send(data);
 });
 
     
