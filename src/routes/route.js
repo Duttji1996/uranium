@@ -16,7 +16,7 @@ router.get("/Getbook", bookAssign.bookGet)
 
 router.post("/createBook", bookcontroller.bookPostController );             //1st Api
 router.get("/bookList", bookcontroller.bookGetController);
-router.get("/booksinyear/:year",bookcontroller.bookyearlist);
+router.get("/booksinyear",bookcontroller.bookyearlist);
 router.get("/particularBooks",bookcontroller.particularBooklist);
 router.get("/Xinrbooks",bookcontroller.IndianBook);
 router.get("/randomBooks",bookcontroller.randomBook);

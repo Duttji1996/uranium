@@ -16,7 +16,7 @@ const booklist= async function(req,res){
 
 // Problem 3 completed
 const listbookyear= async function(req,res){
-    let data =req.params.year
+    let data =req.body.year
     let alldata= await bookmodel.find({ year: data  }).select({bookName: 1, _id: 0})
     res.send({alldata})
 };
