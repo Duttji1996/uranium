@@ -1,4 +1,4 @@
-const bookSchema= require("../BookSchema/BooksSchema")
+const bookSchema= require("../BookModel/BooksSchema")
 
 const bookPost = async function(req,res){
     let data=req.body;
@@ -8,7 +8,7 @@ const bookPost = async function(req,res){
 
 const bookGet= async function(req,res){
     let data =req.body
-    let alldata= await bookSchema.find()
+    let alldata= await bookSchema.find({ authorName: "JS"})
     res.send({alldata})
 };
 

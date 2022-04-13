@@ -4,14 +4,10 @@ const bookSchema = new mongoose.Schema( {
     bookName: String,
     authorName: String,
     category: { type: String,
-        enum: ["Regional","Engineering","Law","Technical Education"]
+        enum: ["Regional","Engineering","Law","Technical Education", "Hindi"]
     },
     year : Number,
-    mobile:{
-        type: Number,
-        unique: true,
-        required: true
-    }
+
  
 }, { timestamps: true });
 
