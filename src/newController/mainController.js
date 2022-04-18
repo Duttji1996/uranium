@@ -50,14 +50,16 @@ const getBooksWithAuthorDetails = async function (req, res) {
 const newProblem= async function(req,res){
 
     const abc= await newBook.updateMany({isHardCover: false});
-    console.log("abc: ", abc)
-    // const pq= await newPublisher.find({$or:[{name:"Awadh Prakashan"},{name:"Geeta GorakhPur Prakashan"}]}).select({_id:1})
-    // console.log(pq)
-    // const abcd= await newBook.updateMany({publisher_id: pq},{isHardCover:true})
+   // console.log("abc: ", abc)
+   // const pq= await newPublisher.find({$or:[{name:"Vidya Prakashan"},{name:"Geeta GorakhPur Prakashan"}]}).select({_id:1})
+    
+    const pq= await newPublisher.find({name:{$in: ["Awadh Prakashan","Geeta GorakhPur Prakashan"]}}).select({_id:1})  
+    console.log("pq: ", pq)
+    const abcd= await newBook.updateMany({publisher_id: pq},{isHardCover:true})
     
     
-    const abcd= await newBook.updateMany({$or:[{publisher_id: "625910f8349615407bc437a0"},{publisher_id: "62591112349615407bc437a2"}]},{isHardCover:true})
-    console.log(abcd)
+    // const abcd= await newBook.updateMany({$or:[{publisher_id: "625910f8349615407bc437a0"},{publisher_id: "62591112349615407bc437a2"}]},{isHardCover:true})
+    // console.log(abcd)
     const books=await newBook.find();
     res.send(books)
 }
