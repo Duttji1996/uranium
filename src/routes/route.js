@@ -1,61 +1,25 @@
 const express = require('express');
 const router = express.Router();
-// const UserModel= require("../models/userModel.js")
-const UserController= require("../controllers/userController")
-const BookController= require("../controllers/bookController")
-const commonMW = require ("../middlewares/commonMiddlewares")
+const mainController= require("../middleware/Mwcontroller")  // import of middleware
+const BookController= require("../BookController/BookController")
 
-router.get("/test-me", function (req, res) {
-    res.send("My first ever api!")
-})
+function middleware (req,res,next){
+    let loggeedIn= true
+    if(loggeedIn==true){
+        next()
+    }
+    else{
+        console.log("No Log in, Please sign Up or Register")
+        res.send("No Log in, Please sign Up or Register")
+    }
+}
 
-
-
-
-router.post("/createBook", BookController.createBook  )
-
-
-
-
-// router.post("/createUser", UserController.createUser  )
-// router.get("/getUsersData", UserController.getUsersData)
-
-
-// const mid1= function ( req, res, next) {
-//     console.log("Hi I am a middleware named Mid1")
-//     // logic
-//     let loggedIn = false
-
-//     if (loggedIn== true) { 
-//         console.log( "OK LOGGED IS IS TRUE NOW")
-//         next ()
-//     }
-//     else {
-//         res.send ("Please login or register")
-//     }
-// }
-
-// // e.g. restricted and open-to-all API's can be handled like below now:
-// router.get('/homePage', mid1, UserController.feeds)
-// router.get('/profileDetails', mid1, UserController.profileDetails)
-// router.get('/friendList', mid1, UserController.friendList)
-// router.get('/changePassword', mid1, UserController.changePassword)
-
-// router.get('/termsAndConditions',  UserController.termsAndConditions)
-// router.get('/register',  UserController.register)
-
-
-
-
-
-router.get("/basicRoute", commonMW.mid1, commonMW.mid2, commonMW.mid3, commonMW.mid4, UserController.basicCode)
-
-
-
-// router.get("/basicRoute2", commonMW.mid1, UserController.basicCode2)
-// router.get("/basicRoute3", commonMW.mid2, UserController.basicCode3)
-// router.get("/basicRoute4", commonMW.mid1, commonMW.mid4, UserController.basicCode4)
-
+router.post("/BookCreate", BookController.BookCreate)
+router.get("/mid1", middleware, mainController.mid1)
+router.get("/mid2", middleware, mainController.mid2)
+router.get("/mid3", middleware, mainController.mid3)
+router.get("/mid4", middleware, mainController.mid4)
+router.get("/FindBook", middleware, mainController.mid1, mainController.mid2,mainController.mid3,mainController.mid4, BookController.FindBook)
 
 
 
