@@ -5,7 +5,7 @@ const { decode } = require("jsonwebtoken");
 const UserDocument = async function (req, res) {
   let data = req.body;
   let UserDocumentCreate = await UserModelSchema.create(data)
-  res.send(UserDocumentCreate)
+  res.status(201).send(UserDocumentCreate)
 }
 
 const LoginForm = async function (req, res) {
@@ -20,7 +20,7 @@ const LoginForm = async function (req, res) {
   console.log(Detailverify)
 
   if (!Detailverify) {
-   return  res.send("username or Password invalid")
+    return res.status(403).send("username or Password invalid")
   }
   let token = jwt.sign(
     {
@@ -30,33 +30,15 @@ const LoginForm = async function (req, res) {
     "functionup-thorium"          //secret Key
   );
   res.setHeader("x-auth-token", token);
-  res.send({ MSG: token })
+  res.status(201).send({ MSG: token })
 };
 // 3rd number question
 
-const GetUserDeatail= async function(req,res){
+const GetUserDeatail = async function (req, res) {
 
-  let paramid= req.params.userId
-  console.log("user id in Params:   ", paramid)
+  let paramid = req.params.userId
+  // console.log("user id in Params:   ", paramid)
 
-  let header= req.headers;
-  console.log('header:  ',header)
-
-  let token= header['x-auth-token'] || header["x-Auth-token"];
-
-  console.log("token are:  ", token);
-
-  if(!token){
-   return res.send("x-auth-token is not present in header")
-  }
-  console.log("decode token  are below ")
-
-  let decodedToken = ''
-    try {
-         decodedToken = jwt.verify( token , "functionup-thorium")
-      } catch(err) {
-        return res.send({ status: false , message: "token is invalid"})
-      }
 
   // let decoded = jwt.verify(token, 'functionup-thorium');
   // console.log("decode token:  ", decoded)
@@ -66,74 +48,95 @@ const GetUserDeatail= async function(req,res){
   //   return res.send("token is not valid");
   // }
 
-  
-  let UserData= await UserModelSchema.findById({_id: paramid})
+
+  let UserData = await UserModelSchema.findById(paramid)
   console.log("user details: ", UserData);
 
-  if(!UserData){
-   
+  if (!UserData) {
+
     console.log("User Id not match")
-    return res.send("User ID is not valid ") 
+    return res.status(403).send("User ID is not valid ")
   }
-  
-  res.send({data: UserData })
+
+  res.status(200).send({ data: UserData })
 
 };
 
 //4th Problem
 
-const UpdateUser= async function(req,res){
+const UpdateUser = async function (req, res) {
 
-  let ParamsId=req.params.userId;
-  let header= req.headers
-  let data=req.body
-  console.log("body part: ",data.mobile)
-
-  //console.log("header:  ", header)
-
-  let token= header['x-auth-token'] || header["x-Auth-token"];
-  if(!token){
-    return res.send("No token Found")
-  }
-  let UserVerification= await UserModelSchema.findById({_id:ParamsId})
-  if(!UserVerification){
-    return res.send("user id not valid")
-  }
-
-  let UpdateMobile= await UserModelSchema.findByIdAndUpdate({_id:ParamsId} ,{$set: {mobile: req.body.mobile}}, {new:true})
+  let ParamsId = req.params.userId;
   
-  res.send(UpdateMobile)
+  let data = req.body         // here i am changing mobile number
+  console.log("body part: ", data.mobile)
+
+
+  let UserVerification = await UserModelSchema.findById({ _id: ParamsId })
+  if (!UserVerification) {
+    return res.status(401).send("user id not valid")
+  }
+
+  let UpdateMobile = await UserModelSchema.findByIdAndUpdate({ _id: ParamsId }, { $set: { mobile: req.body.mobile } }, { new: true })   // also i can put anything from which we are receiving from body
+
+  res.status(201).send(UpdateMobile)
 
 }
 
 //Problem 5
 
-const DeleteUser= async function(req,res){
-  let header=req.headers
-  console.log("header:  ",header)
+const DeleteUser = async function (req, res) {
 
-  let ParamId= req.params.userId
-  console.log("UserID: ",ParamId)
 
-  let token= header['x-auth-token'] || header["x-Auth-token"];
-  if(!token){
-    return res.send("no token present ")
-  }
-  let UserVerification= await UserModelSchema.findById({_id:ParamId})
-  console.log("UserVerification:  ",UserVerification)
+  let ParamId = req.params.userId
+  console.log("UserID: ", ParamId)
 
-  if(!UserVerification){
-    return res.send("not a valid user or wrong User ID")
+
+  let UserVerification = await UserModelSchema.findById({ _id: ParamId })
+  console.log("UserVerification:  ", UserVerification)
+
+  if (!UserVerification) {
+    return res.status(401).send("not a valid user or wrong User ID")
   }
 
-  let deleteUsers= await UserModelSchema.findByIdAndUpdate({_id: ParamId},{$set:{isDeleted: true}},{new:true})
+  let deleteUsers = await UserModelSchema.findByIdAndUpdate({ _id: ParamId }, { $set: { isDeleted: true } }, { new: true })
   console.log("deletedUser: ", deleteUsers)
-  res.send(deleteUsers)
+  res.status(201).send(deleteUsers)
 
 }
 
-module.exports.DeleteUser=DeleteUser
-module.exports.GetUserDeatail=GetUserDeatail;
+//Problem 6
+
+const UserAutherization= async function(req,res,next){
+  let header = req.headers
+  let User= req.params.userId
+
+  let findUserDetail= await UserModelSchema.findById(User)
+  if(!findUserDetail){
+    return res.status(403).send("User Id not found")
+  }
+  
+  let token= header['x-auth-token'] || header["x-Auth-token"];
+  
+      let decodedToken = jwt.verify( token , "functionup-thorium")
+      console.log("decodedToken:  ",decodedToken)
+
+    if(decodedToken.userId!=User){
+      console.log("Authorisation Failed")
+      return res.status(401).send("Authorisation Failed")
+    }
+    
+
+    console.log("Everything is okay till now: ",User)
+     res.status(200).send(findUserDetail)
+  
+
+}
+
+
+module.exports.DeleteUser = DeleteUser
+module.exports.GetUserDeatail = GetUserDeatail;
 module.exports.UserDocument = UserDocument;
 module.exports.LoginForm = LoginForm;
-module.exports.UpdateUser=UpdateUser;
+module.exports.UpdateUser = UpdateUser;
+module.exports.UserAutherization=UserAutherization;

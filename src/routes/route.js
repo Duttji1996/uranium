@@ -1,30 +1,24 @@
 const express = require('express');
 const router = express.Router();
-const userController= require("../controllers/userController")
+
 const newUserContrller= require("../controllers/UserModelController")
+const Middleware= require("../Middleware/auth")
 
-router.get("/test-me", function (req, res) {
-    res.send("My first ever api!")
-})
 
-router.post("/user", userController.createUser  )
 
-router.post("/loginUser", userController.loginUser)
+//Assignment Router
 
-//The userId is sent by front end
-router.get("/users/:userId", userController.getUserData)
+router.post("/userDocument",newUserContrller.UserDocument)              //1st Problem API
+router.post("/LoginForm",newUserContrller.LoginForm);                   // 2nd Problem API
 
-router.put("/users/:userId",  userController.updateUser)
+router.get("/GetUserDeatail/:userId", Middleware.mid1, Middleware.mid2,newUserContrller.GetUserDeatail)   //3rd Problem API with Middlware
 
-//Assignment Route
+router.put("/UpdateUser/:userId",Middleware.mid1,newUserContrller.UpdateUser)                               // 4th Problem API with Middleware
 
-router.post("/userDocument",newUserContrller.UserDocument)
-router.post("/LoginForm",newUserContrller.LoginForm);
+router.delete("/DeleteUser/:userId",Middleware.mid1,newUserContrller.DeleteUser)                                            // 5h Problem API with Middleware
 
-router.get("/GetUserDeatail/:userId", newUserContrller.GetUserDeatail)
+router.get("/UserAutherization/:userId", Middleware.mid1,Middleware.mid2,newUserContrller.UserAutherization)        
 
-router.put("/UpdateUser/:userId",newUserContrller.UpdateUser)
 
-router.delete("/DeleteUser/:userId",newUserContrller.DeleteUser)
 
 module.exports = router;
