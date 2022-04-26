@@ -27,5 +27,7 @@ router.get("/weather",newController.weather)                        // 2nd Probl
 
 router.post("/meme",newController.meme)                             // 3rd Problem API
 
+router.get("/weatherofAllCity",newController.weatherofAllCity)
+
 
 module.exports = router;

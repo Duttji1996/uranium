@@ -91,6 +91,41 @@ let weather= async function(req,res){
 }
 
 // ===============================================================================================================
+
+let weatherofAllCity= async function(req,res){
+    let query=req.query;
+
+    let location= ["Bengaluru","Mumbai", "Delhi", "Kolkata", "Chennai", "London", "Moscow"];
+
+    let abcd= [];
+    for(let i=0;i<location.length;i++){
+        let obj= {city: location[i]}
+
+        let website= {
+            method:"get",
+            url: `http://api.openweathermap.org/data/2.5/weather?q=${location[i]}&appid=26575d743504e35754fb6b68ea73591e`
+        }
+        let result= await axios(website)
+
+        obj.temp = result.data.main.temp
+        abcd.push(obj)
+
+    }
+
+let sorted= abcd.sort(function(a,b){
+    return a.temp-b.temp
+})
+
+console.log("sorted ", sorted)
+
+res.send(sorted)
+
+
+}
+
+
+
+//****************************************************************************************************************************** */
 //3rd Problem
 
 let meme= async function(req,res){
@@ -115,3 +150,4 @@ module.exports.getState=getState
 module.exports.getDistricts=getDistricts
 module.exports.appointment=appointment
 module.exports.meme=meme
+module.exports.weatherofAllCity=weatherofAllCity
