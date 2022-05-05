@@ -14,7 +14,9 @@ const CollegeController = async function (req, res) {
 
         let StringCheck = /^[A-Za-z ,]{2,10000}$/
 
-        let StringCheck1 = /^[A-Za-z]{2,10000}$/        // regex is use for only college:  anabbreviated name
+        let StringCheck1 = /^[A-Za-z-]{2,10000}$/        // regex is use for only college:  anabbreviated name
+
+        
 
         if (!body.name) {
             return res.status(404).send({ Status: false, msg: "Please Enter the name , example: iith" })

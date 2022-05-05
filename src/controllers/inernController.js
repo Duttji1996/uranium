@@ -85,9 +85,9 @@ const InternDetails = async function (req, res) {
             return res.status(404).send({ Status: false, msg: "Please enter the name ,This is anabbreviated college name. For example: iith" })
         }
 
-        let StringCheck = /^[a-z]{2,10000}$/
+        let StringCheck1 = /^[A-Za-z-]{2,10000}$/ 
 
-        if (!StringCheck.test(query.name)) {
+        if (!StringCheck1.test(query.name)) {
             return res.status(403).send({ Status: false, msg: "name must be alphabetic and lowercase and length > 1 , special character or space or number are not allowed" })
         }
 
