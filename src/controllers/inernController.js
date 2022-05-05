@@ -12,7 +12,7 @@ const InternController = async function (req, res) {
 
         let NumberCheck = /^[6-9]{1}[0-9]{9}$/
 
-        let Emailcheck = /^[A-Za-z_.0-9]{1,1000}@[A-Za-z]{3,1000}[.]{1}[A-Za-z.]{2,6}$/
+        let Emailcheck = /^[A-Za-z_.0-9]{2,1000}@[A-Za-z]{3,1000}[.]{1}[A-Za-z.]{2,6}$/
 
         //checking data is coming from body or not
 
@@ -85,32 +85,39 @@ const InternDetails = async function (req, res) {
             return res.status(404).send({ Status: false, msg: "Please enter the name ,This is anabbreviated college name. For example: iith" })
         }
 
-        let StringCheck1 = /^[A-Za-z-]{2,10000}$/ 
+        let StringCheck1 = /^[a-z-]{2,10000}$/ 
 
         if (!StringCheck1.test(query.name)) {
             return res.status(403).send({ Status: false, msg: "name must be alphabetic and lowercase and length > 1 , special character or space or number are not allowed" })
         }
 
-        let CheckCollege = await collegeModel.findOne({ name: query.name })
+        let CollegeName = await collegeModel.findOne({ name: query.name })
 
 
-        if (!CheckCollege) {
+        if (!CollegeName) {
             return res.status(404).send({ Status: false, msg: " No college Found" })
         }
 
-        let getData = await InternModel.find({ collegeId: CheckCollege._id }).select({ _id: 1, name: 1, email: 1, mobile: 1 })
+        let getData = await InternModel.find({ collegeId: CollegeName._id }).select({ _id: 1, name: 1, email: 1, mobile: 1 })
 
 
         if (getData.length === 0) {
             return res.status(404).send({ Status: true, msg: " Sorry No student received into this college" })
         }
 
+
+        let name=CollegeName.name
+        let fullName=CollegeName.fullName
+        let logoLink=CollegeName.logoLink
+
         let Interest = []
         Interest = Interest.concat(getData)
+        
+        let FinalData={}
+        FinalData = {name,fullName,logoLink,Interest}
+        
 
-        let CollegeName = await collegeModel.findOne({ name: query.name }).select({ name: 1, fullName: 1, logoLink: 1, _id: 0 })
-
-        return res.status(200).send({ Status: true, data: CollegeName, Interest })
+        return res.status(200).send({ Status: true, data: FinalData })
     }
     catch (err) {
         return res.status(404).send({ Status: false, msg: err.message })

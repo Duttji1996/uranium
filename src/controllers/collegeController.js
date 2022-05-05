@@ -1,7 +1,6 @@
 const collegeModel = require("../models/collegeModel")
 
 
-
 const CollegeController = async function (req, res) {
 
     try {
@@ -14,7 +13,7 @@ const CollegeController = async function (req, res) {
 
         let StringCheck = /^[A-Za-z ,]{2,10000}$/
 
-        let StringCheck1 = /^[A-Za-z-]{2,10000}$/        // regex is use for only college:  anabbreviated name
+        let StringCheck1 = /^[a-z-]{2,10000}$/        // regex is use for only college:  abbreviated name
 
         
 
@@ -28,12 +27,12 @@ const CollegeController = async function (req, res) {
             return res.status(404).send({ Status: false, msg: "Sorry You have not enter the logoLink" })
         }
         if(!StringCheck1.test(body.name)){
-            return res.status(403).send({ Status: false, msg: "name must be alphabetic and length of word must be more than one, special characterS/space/number are not allowed" })
+            return res.status(403).send({ Status: false, msg: "name must be in lowercase alphabet & length of word must be more than one, special characterS/space/number are not allowed" })
         }
         if(!StringCheck.test(body.fullName)){
             return res.status(403).send({ Status: false, msg: "fullName must be alphabetic and length of word must be more than one , no special character/number allowed" })
         }
-
+        
         let checkName= await collegeModel.findOne({name:body.name})
 
         if(checkName){
