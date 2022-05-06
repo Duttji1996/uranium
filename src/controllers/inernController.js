@@ -95,17 +95,17 @@ const InternDetails = async function (req, res) {
         if (Object.keys(query).length === 0) {
             return res.status(404).send({ Status: false, msg: "Req query is empty" })
         }
-        if (!query.name) {
+        if (!query.collegeName) {
             return res.status(400).send({ Status: false, msg: "Please enter the name ,This is anabbreviated college name. For example: iith" })
         }
 
         let StringCheck1 = /^[a-z]{1,}[a-z-]{1,}$/
 
-        if (!StringCheck1.test(query.name)) {
+        if (!StringCheck1.test(query.collegeName)) {
             return res.status(400).send({ Status: false, msg: "name must be alphabetic and lowercase and length > 1 , special character or space or number are not allowed" })
         }
 
-        let CollegeName = await collegeModel.findOne({ name: query.name })
+        let CollegeName = await collegeModel.findOne({ name: query.collegeName })
 
 
         if (!CollegeName) {
