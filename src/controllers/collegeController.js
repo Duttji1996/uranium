@@ -27,6 +27,9 @@ const CollegeController = async function (req, res) {
         if (!body.logoLink) {
             return res.status(404).send({ Status: false, msg: "Sorry You have not enter the logoLink" })
         }
+
+        // starting use to regex
+        
         if(!StringCheck1.test(body.name)){
             return res.status(403).send({ Status: false, msg: "name must be in lowercase alphabetic and String.length > 1, special characterS/space/number are not allowed, word will not be start from alphabets space or (-) this" })
         }
