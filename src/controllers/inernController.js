@@ -6,9 +6,11 @@ const InternController = async function (req, res) {
     try {
         let body = req.body
 
+        
+
         // regex Condition
 
-        let StringCheck = /^[A-Za-z]{1}[A-Za-z ,]{1,10000}$/
+
 
         let NumberCheck = /^[6-9]{1}[0-9]{9}$/
 
@@ -28,11 +30,16 @@ const InternController = async function (req, res) {
         if (!body.email) {
             return res.status(404).send({ Status: false, msg: "email is required" })
         }
-        if (!body.collegeId) {
-            return res.status(404).send({ Status: false, msg: "collegeId is required" })
+        if (!body.collegeName) {
+            return res.status(404).send({ Status: false, msg: "collegeName is required" })
         }
 
+
         // regex validation using 
+
+        let StringCheck1 = /^[a-z]{1,}[a-z-]{1,}$/
+
+        let StringCheck = /^[A-Za-z]{1}[A-Za-z ,]{1,10000}$/
 
         if (!StringCheck.test(body.name)) {
             return res.status(403).send({ Status: false, msg: "name must be alphabetic, no special characet or number allowed" })
@@ -44,12 +51,15 @@ const InternController = async function (req, res) {
         if (!Emailcheck.test(body.email)) {
             return res.status(403).send({ Status: false, msg: "Please enter a valid email address" })
         }
+        if(!StringCheck1.test(body.collegeName)){
+            return res.status(403).send({status: false, msg:"College name is not valid"})
+        }
 
         // checking college anabbreviated name and finding the college Object id
 
-        let CheckCollegeID = await collegeModel.findOne({ _id: body.collegeId })
+        let CheckCollegeID = await collegeModel.findOne({ name: body.collegeName })
         if (!CheckCollegeID) {
-            return res.status(404).send({ Status: false, msg: "This is not a valid college ID" })
+            return res.status(404).send({ Status: false, msg: "This is not a valid college name" })
         }
 
         // checking duplcate data of mobile and email: it must be unique
@@ -63,8 +73,9 @@ const InternController = async function (req, res) {
         }
 
         let InternData = await InternModel.create(body)
+        let FinalData= await InternModel.findOneAndUpdate({email:body.email,mobile:body.mobile},{$set:{collegeId:CheckCollegeID._id}},{new:true})
 
-        return res.status(201).send({ Status: true, msg: InternData })
+        return res.status(201).send({ Status: true, msg: FinalData })
     }
     catch (err) {
         return res.status(404).send({ Status: false, msg: err.message })
