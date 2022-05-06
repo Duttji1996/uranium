@@ -88,21 +88,21 @@ const InternDetails = async function (req, res) {
         let StringCheck1 = /^[a-z]{1,}[a-z-]{1,}$/
 
         if (!StringCheck1.test(query.name)) {
-            return res.status(403).send({ Status: false, msg: "name must be alphabetic and lowercase and length > 1 , special character or space or number are not allowed" })
+            return res.status(400).send({ Status: false, msg: "name must be alphabetic and lowercase and length > 1 , special character or space or number are not allowed" })
         }
 
         let CollegeName = await collegeModel.findOne({ name: query.name })
 
 
         if (!CollegeName) {
-            return res.status(404).send({ Status: false, msg: " No college Found" })
+            return res.status(400).send({ Status: false, msg: " No college Found" })
         }
 
         let getData = await InternModel.find({ collegeId: CollegeName._id }).select({ _id: 1, name: 1, email: 1, mobile: 1 })
 
 
         if (getData.length === 0) {
-            return res.status(404).send({ Status: true, msg: " Sorry No student received into this college" })
+            return res.status(400).send({ Status: true, msg: " Sorry No student received into this college" })
         }
 
 
