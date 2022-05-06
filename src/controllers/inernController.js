@@ -82,7 +82,7 @@ const InternDetails = async function (req, res) {
             return res.status(404).send({ Status: false, msg: "Req query is empty" })
         }
         if (!query.name) {
-            return res.status(404).send({ Status: false, msg: "Please enter the name ,This is anabbreviated college name. For example: iith" })
+            return res.status(400).send({ Status: false, msg: "Please enter the name ,This is anabbreviated college name. For example: iith" })
         }
 
         let StringCheck1 = /^[a-z]{1,}[a-z-]{1,}$/
