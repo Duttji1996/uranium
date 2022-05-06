@@ -29,7 +29,10 @@ const InternController = async function (req, res) {
             return res.status(400).send({ Status: false, msg: "collegeName is required" })
         }
         if(body.isDeleted===true){
-            return res.status(400).send({Status: false, msg:"Sory it can not be create due is deleted true"})
+            return res.status(400).send({Status: false, msg:"Sory it can not be create due to it is deleted: true"})
+        }
+        if(typeof body.isDeleted === "string"){
+            return res.status(400).send({Status: false, msg:" isDeleted is a string form, Sory it can not be create"})
         }
 
 
