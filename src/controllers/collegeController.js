@@ -15,6 +15,7 @@ const CollegeController = async function (req, res) {
 
         let StringCheck1 = /^[a-z]{1,}[a-z-]{1,}$/        // regex is use for only college:  abbreviated name
 
+        let CheckUrl= /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/
         
 
         if (!body.name) {
@@ -31,6 +32,9 @@ const CollegeController = async function (req, res) {
         }
         if(!StringCheck.test(body.fullName)){
             return res.status(403).send({ Status: false, msg: "fullName must be alphabetic and String.length > 1 , no special character/number allowed, word will not be start from space this" })
+        }
+        if(!CheckUrl.test(body.logoLink)){
+            return res.status(404).send({ Status: false, msg: "Sorry You have enter the wrong logoLink" })
         }
         
         let checkName= await collegeModel.findOne({name:body.name})
