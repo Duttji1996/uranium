@@ -8,7 +8,7 @@ const InternController = async function (req, res) {
 
         // regex Condition
 
-        let StringCheck = /^[A-Za-z ]{1,10000}$/
+        let StringCheck = /^[A-Za-z]{1}[A-Za-z ,]{1,10000}$/
 
         let NumberCheck = /^[6-9]{1}[0-9]{9}$/
 
@@ -85,7 +85,7 @@ const InternDetails = async function (req, res) {
             return res.status(404).send({ Status: false, msg: "Please enter the name ,This is anabbreviated college name. For example: iith" })
         }
 
-        let StringCheck1 = /^[a-z-]{2,10000}$/ 
+        let StringCheck1 = /^[a-z]{1,}[a-z-]{1,}$/
 
         if (!StringCheck1.test(query.name)) {
             return res.status(403).send({ Status: false, msg: "name must be alphabetic and lowercase and length > 1 , special character or space or number are not allowed" })

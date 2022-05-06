@@ -11,9 +11,9 @@ const CollegeController = async function (req, res) {
         }
         // validation
 
-        let StringCheck = /^[A-Za-z ,]{2,10000}$/
+        let StringCheck = /^[A-Za-z]{1}[A-Za-z ,]{1,10000}$/
 
-        let StringCheck1 = /^[a-z-]{2,10000}$/        // regex is use for only college:  abbreviated name
+        let StringCheck1 = /^[a-z]{1,}[a-z-]{1,}$/        // regex is use for only college:  abbreviated name
 
         
 
@@ -27,10 +27,10 @@ const CollegeController = async function (req, res) {
             return res.status(404).send({ Status: false, msg: "Sorry You have not enter the logoLink" })
         }
         if(!StringCheck1.test(body.name)){
-            return res.status(403).send({ Status: false, msg: "name must be in lowercase alphabet & length of word must be more than one, special characterS/space/number are not allowed" })
+            return res.status(403).send({ Status: false, msg: "name must be in lowercase alphabetic and String.length > 1, special characterS/space/number are not allowed, word will not be start from alphabets space or (-) this" })
         }
         if(!StringCheck.test(body.fullName)){
-            return res.status(403).send({ Status: false, msg: "fullName must be alphabetic and length of word must be more than one , no special character/number allowed" })
+            return res.status(403).send({ Status: false, msg: "fullName must be alphabetic and String.length > 1 , no special character/number allowed, word will not be start from space this" })
         }
         
         let checkName= await collegeModel.findOne({name:body.name})
