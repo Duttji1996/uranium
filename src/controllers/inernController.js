@@ -124,11 +124,11 @@ const InternDetails = async function (req, res) {
         let fullName=CollegeName.fullName
         let logoLink=CollegeName.logoLink
 
-        let Interest = []
-        Interest = Interest.concat(getData)
+        let Interests = []
+        Interests = IntersectionObserverEntry.concat(getData)
         
         let FinalData={}
-        FinalData = {name,fullName,logoLink,Interest}
+        FinalData = {name,fullName,logoLink,Interests}
         
 
         return res.status(200).send({ Status: true, data: FinalData })
