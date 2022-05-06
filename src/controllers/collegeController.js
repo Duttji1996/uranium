@@ -19,25 +19,25 @@ const CollegeController = async function (req, res) {
         
 
         if (!body.name) {
-            return res.status(404).send({ Status: false, msg: "Please Enter the name , example: iith" })
+            return res.status(400).send({ Status: false, msg: "Please Enter the name , example: iith" })
         }
         if (!body.fullName) {
-            return res.status(404).send({ Status: false, msg: "Please enter the fullname of college" })
+            return res.status(400).send({ Status: false, msg: "Please enter the fullname of college" })
         }
         if (!body.logoLink) {
-            return res.status(404).send({ Status: false, msg: "Sorry You have not enter the logoLink" })
+            return res.status(400).send({ Status: false, msg: "Sorry You have not enter the logoLink" })
         }
 
         // starting use to regex
-        
+
         if(!StringCheck1.test(body.name)){
-            return res.status(403).send({ Status: false, msg: "name must be in lowercase alphabetic and String.length > 1, special characterS/space/number are not allowed, word will not be start from alphabets space or (-) this" })
+            return res.status(400).send({ Status: false, msg: "name must be in lowercase alphabetic and String.length > 1, special characterS/space/number are not allowed, word will not be start from alphabets space or (-) this" })
         }
         if(!StringCheck.test(body.fullName)){
-            return res.status(403).send({ Status: false, msg: "fullName must be alphabetic and String.length > 1 , no special character/number allowed, word will not be start from space this" })
+            return res.status(400).send({ Status: false, msg: "fullName must be alphabetic and String.length > 1 , no special character/number allowed, word will not be start from space this" })
         }
         if(!CheckUrl.test(body.logoLink)){
-            return res.status(404).send({ Status: false, msg: "Sorry You have enter the wrong logoLink" })
+            return res.status(400).send({ Status: false, msg: "Sorry You have enter the wrong logoLink" })
         }
         
         let checkName= await collegeModel.findOne({name:body.name})
@@ -53,7 +53,7 @@ const CollegeController = async function (req, res) {
         return res.status(201).send({ Status: true, msg: Data })
     }
     catch (err) {
-        return res.status(404).send({ Status: false, msg: err.message })
+        return res.status(500).send({ Status: false, msg: err.message })
     }
 }
 

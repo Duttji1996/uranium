@@ -6,12 +6,7 @@ const InternController = async function (req, res) {
     try {
         let body = req.body
 
-        
-
         // regex Condition
-
-
-
         let NumberCheck = /^[6-9]{1}[0-9]{9}$/
 
         let Emailcheck = /^[A-Za-z_.0-9]{2,1000}@[A-Za-z]{3,1000}[.]{1}[A-Za-z.]{2,6}$/
@@ -19,19 +14,19 @@ const InternController = async function (req, res) {
         //checking data is coming from body or not
 
         if (Object.keys(body).length === 0) {
-            return res.status(404).send({ Status: false, msg: "Request Body can't be empty" })
+            return res.status(400).send({ Status: false, msg: "Request Body can't be empty" })
         }
         if (!body.name) {
-            return res.status(404).send({ Status: false, msg: "name is required" })
+            return res.status(400).send({ Status: false, msg: "name is required" })
         }
         if (!body.mobile) {
-            return res.status(404).send({ Status: false, msg: "mobile is required" })
+            return res.status(400).send({ Status: false, msg: "mobile is required" })
         }
         if (!body.email) {
-            return res.status(404).send({ Status: false, msg: "email is required" })
+            return res.status(400).send({ Status: false, msg: "email is required" })
         }
         if (!body.collegeName) {
-            return res.status(404).send({ Status: false, msg: "collegeName is required" })
+            return res.status(400).send({ Status: false, msg: "collegeName is required" })
         }
         if(body.isDeleted===true){
             return res.status(400).send({Status: false, msg:"Sory it can not be create due is deleted true"})
@@ -62,7 +57,7 @@ const InternController = async function (req, res) {
 
         let CheckCollegeID = await collegeModel.findOne({ name: body.collegeName })
         if (!CheckCollegeID) {
-            return res.status(404).send({ Status: false, msg: "This is not a valid college name" })
+            return res.status(400).send({ Status: false, msg: "This is not a valid college name" })
         }
 
         // checking duplcate data of mobile and email: it must be unique
@@ -81,7 +76,7 @@ const InternController = async function (req, res) {
         return res.status(201).send({ Status: true, msg: FinalData })
     }
     catch (err) {
-        return res.status(404).send({ Status: false, msg: err.message })
+        return res.status(500).send({ Status: false, msg: err.message })
     }
 }
 
@@ -93,7 +88,7 @@ const InternDetails = async function (req, res) {
         let query = req.query
 
         if (Object.keys(query).length === 0) {
-            return res.status(404).send({ Status: false, msg: "Req query is empty" })
+            return res.status(400).send({ Status: false, msg: "Req query is empty" })
         }
         if (!query.collegeName) {
             return res.status(400).send({ Status: false, msg: "Please enter the name ,This is anabbreviated college name. For example: iith" })
@@ -134,7 +129,7 @@ const InternDetails = async function (req, res) {
         return res.status(200).send({ Status: true, data: FinalData })
     }
     catch (err) {
-        return res.status(404).send({ Status: false, msg: err.message })
+        return res.status(500).send({ Status: false, msg: err.message })
     }
 }
 
