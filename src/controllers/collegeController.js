@@ -7,7 +7,7 @@ const CollegeController = async function (req, res) {
         let body = req.body
 
         if (Object.keys(body).length === 0) {
-            return res.status(404).send({ Status: false, msg: "Sorry You have not enterd any data to create the account" })
+            return res.status(404).send({ Status: false, message: "Sorry You have not enterd any data to create the account" })
         }
         // validation
 
@@ -19,41 +19,43 @@ const CollegeController = async function (req, res) {
         
 
         if (!body.name) {
-            return res.status(400).send({ Status: false, msg: "Please Enter the name , example: iith" })
+            return res.status(400).send({ Status: false, message: "Please Enter the name , example: iith" })
         }
-        if (!body.fullName) {
-            return res.status(400).send({ Status: false, msg: "Please enter the fullname of college" })
-        }
-        if (!body.logoLink) {
-            return res.status(400).send({ Status: false, msg: "Sorry You have not enter the logoLink" })
-        }
-
-        // starting use to regex
 
         if(!StringCheck1.test(body.name)){
-            return res.status(400).send({ Status: false, msg: "name must be in lowercase alphabetic and String.length > 1, special characterS/space/number are not allowed, word will not be start from alphabets space or (-) this" })
+            return res.status(400).send({ Status: false, message: "name must be in lowercase alphabetic and String.length > 1, special characterS/space/number are not allowed, word will not be start from alphabets space or (-) this" })
         }
+
+        if (!body.fullName) {
+            return res.status(400).send({ Status: false, message: "Please enter the fullname of college" })
+        }
+
         if(!StringCheck.test(body.fullName)){
-            return res.status(400).send({ Status: false, msg: "fullName must be alphabetic and String.length > 1 , no special character/number allowed, word will not be start from space this" })
+            return res.status(400).send({ Status: false, message: "fullName must be alphabetic and String.length > 1 , no special character/number allowed, word will not be start from space this" })
         }
+
+        if (!body.logoLink) {
+            return res.status(400).send({ Status: false, message: "Sorry You have not enter the logoLink" })
+        }
+
         if(!CheckUrl.test(body.logoLink)){
-            return res.status(400).send({ Status: false, msg: "Sorry You have enter the wrong logoLink" })
+            return res.status(400).send({ Status: false, message: "Sorry You have enter the wrong logoLink" })
         }
         
         let checkName= await collegeModel.findOne({name:body.name})
 
         if(checkName){
             if(checkName.name === body.name){
-                return res.status(403).send({Status: false, msg: "Please use another name for college  name, this has been used already"})
+                return res.status(403).send({Status: false, message: "Please use another name for college  name, this has been used already"})
             }
         }
 
         let Data = await collegeModel.create(body)
 
-        return res.status(201).send({ Status: true, msg: Data })
+        return res.status(201).send({ Status: true, data: Data })
     }
     catch (err) {
-        return res.status(500).send({ Status: false, msg: err.message })
+        return res.status(500).send({ Status: false, message: err.message })
     }
 }
 

@@ -4,6 +4,8 @@ const ObjectId = mongoose.Schema.Types.ObjectId
 
 const InternSchema = new mongoose.Schema({
 
+
+    isDeleted: { type: Boolean, default: false },
     name: {
         type: String,
         required: "name is Mandatory",
@@ -24,7 +26,7 @@ const InternSchema = new mongoose.Schema({
         type: ObjectId,
         ref: "college",
     },
-    isDeleted: { type: Boolean, default: false }
+    
 
 }, { timestamps: true })
 
