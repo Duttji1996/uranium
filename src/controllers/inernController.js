@@ -9,7 +9,7 @@ const InternController = async function (req, res) {
         // regex Condition
         let NumberCheck = /^[6-9]{1}[0-9]{9}$/
 
-        let Emailcheck = /^[A-Za-z_.0-9]{2,1000}@[A-Za-z]{3,1000}[.]{1}[A-Za-z.]{2,6}$/
+        let Emailcheck = /^[A-Za-z_.0-9]{2,1000}@[A-Za-z0-9]{3,1000}[.]{1}[A-Za-z.]{2,6}$/
 
         //checking data is coming from body or not
 
@@ -52,7 +52,10 @@ const InternController = async function (req, res) {
         if(!StringCheck1.test(body.collegeName)){
             return res.status(403).send({status: false, msg:"College name is not valid"})
         }
-
+       
+        if(typeof body.mobile === "string"){
+        return res.status(400).send({status: false, msg:"Sorry number can not be string"})
+        }
         // checking college anabbreviated name and finding the college Object id
 
         let CheckCollegeID = await collegeModel.findOne({ name: body.collegeName })
@@ -62,8 +65,8 @@ const InternController = async function (req, res) {
 
         // checking duplcate data of mobile and email: it must be unique
 
-        let checkUniqueData = await InternModel.findOne({ $or: [{ email: body.email }, { mobile: body.mobile }] })
-
+        let checkUniqueData = await InternModel.findOne({ $or: [{ email: body.email },{ mobile: body.mobile }] })
+        
         if (checkUniqueData) {
             if (checkUniqueData.email === body.email || checkUniqueData.mobile === body.mobile ) {
                 return res.status(403).send({ Status: false, msg: "This email/mobile has been used already or isDeleted true" })
