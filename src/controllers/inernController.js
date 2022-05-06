@@ -33,6 +33,9 @@ const InternController = async function (req, res) {
         if (!body.collegeName) {
             return res.status(404).send({ Status: false, msg: "collegeName is required" })
         }
+        if(body.isDeleted===true){
+            return res.status(400).send({Status: false, msg:"Sory it can not be create due is deleted true"})
+        }
 
 
         // regex validation using 
@@ -67,7 +70,7 @@ const InternController = async function (req, res) {
         let checkUniqueData = await InternModel.findOne({ $or: [{ email: body.email }, { mobile: body.mobile }] })
 
         if (checkUniqueData) {
-            if (checkUniqueData.email === body.email || checkUniqueData.mobile === body.mobile || checkUniqueData.isDeleted == true) {
+            if (checkUniqueData.email === body.email || checkUniqueData.mobile === body.mobile ) {
                 return res.status(403).send({ Status: false, msg: "This email/mobile has been used already or isDeleted true" })
             }
         }
