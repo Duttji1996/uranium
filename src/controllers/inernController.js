@@ -125,7 +125,7 @@ const InternDetails = async function (req, res) {
         let logoLink=CollegeName.logoLink
 
         let Interests = []
-        Interests = IntersectionObserverEntry.concat(getData)
+        Interests = Interests.concat(getData)
         
         let FinalData={}
         FinalData = {name,fullName,logoLink,Interests}
