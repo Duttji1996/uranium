@@ -67,8 +67,8 @@ const InternController = async function (req, res) {
         let checkUniqueData = await InternModel.findOne({ $or: [{ email: body.email }, { mobile: body.mobile }] })
 
         if (checkUniqueData) {
-            if (checkUniqueData.email === body.email || checkUniqueData.mobile === body.mobile) {
-                return res.status(403).send({ Status: false, msg: "This email/mobile has been used already" })
+            if (checkUniqueData.email === body.email || checkUniqueData.mobile === body.mobile || checkUniqueData.isDeleted == true) {
+                return res.status(403).send({ Status: false, msg: "This email/mobile has been used already or isDeleted true" })
             }
         }
 
