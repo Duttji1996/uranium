@@ -60,6 +60,8 @@ const createCart = async (req, res) => {
 
         data.items = [{ productId: isProductPresent._id, quantity: quantity }]
 
+        console.log("help  ",data.items)
+
         data.totalPrice = (isProductPresent.price) * quantity
 
         data.totalItems = data.items.length
@@ -114,9 +116,7 @@ const createCart = async (req, res) => {
 
         //------------this line is being use to remove _V:0   ---------------------------------------------//
 
-        let findData = await cartModel.findOne({ id: createCart._id }).select({ "_v": 0 })
-
-        return res.status(201).send({ status: true, message: "cart added", data: findData })
+        return res.status(201).send({ status: true, message: "cart added", data: createCart })
 
     } catch (err) {
         return res.status(500).send({ Status: false, message: err.message })
